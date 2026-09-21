@@ -19,10 +19,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.world.level.block.state.BlockState;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class DisplayCollectorBlockEntity extends DisplayLinkBlockEntity {
-    private Component component;
+    private Component component = Component.empty();
     public DisplayCollectorBlockEntity(BlockPos pos, BlockState state) {
         super(EGBlockEntityTypes.DISPLAY_COLLECTOR.get(), pos, state);
     }
@@ -33,7 +34,7 @@ public class DisplayCollectorBlockEntity extends DisplayLinkBlockEntity {
         behaviours.add(factoryPanelSupport = new AbstractPanelSupportBehaviour(this, () -> true, () -> {}) {
             @Override
             public void addConnections(PanelConnectionBuilder builder) {
-                builder.registerOutput(DeployerPanelConnections.STRING, () -> component == null ? null : component.getString());
+                builder.registerOutput(DeployerPanelConnections.STRING, () -> getComponent().getString());
             }
         });
     }
@@ -46,28 +47,26 @@ public class DisplayCollectorBlockEntity extends DisplayLinkBlockEntity {
         ComponentSerialization.FLAT_CODEC
                 .parse(dynamicops, tag.get("text"))
                 .resultOrPartial(ExtraGauges.CONSTANTS.getLogger()::error)
-                .ifPresent(text -> component = text);
+                .ifPresent(this::setComponent);
     }
 
     @Override
     protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
-        if(component != null) {
-            DynamicOps<Tag> dynamicops = registries.createSerializationContext(NbtOps.INSTANCE);
-            ComponentSerialization.FLAT_CODEC
-                    .encodeStart(dynamicops, component)
-                    .resultOrPartial(ExtraGauges.CONSTANTS.getLogger()::error)
-                    .ifPresent(tag1 -> tag.put("text", tag1));
-        }
+        DynamicOps<Tag> dynamicops = registries.createSerializationContext(NbtOps.INSTANCE);
+        ComponentSerialization.FLAT_CODEC
+                .encodeStart(dynamicops, getComponent())
+                .resultOrPartial(ExtraGauges.CONSTANTS.getLogger()::error)
+                .ifPresent(tag1 -> tag.put("text", tag1));
     }
 
+    @Nonnull
     public Component getComponent() {
         return component == null ? Component.empty() : component;
     }
 
     public void setComponent(Component component) {
         this.component = component;
-        factoryPanelSupport.notifyPanels();
     }
 
     @Override

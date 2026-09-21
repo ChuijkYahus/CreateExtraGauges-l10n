@@ -5,13 +5,21 @@ import com.simibubi.create.content.logistics.factoryBoard.FactoryPanelPosition;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
+import net.liukrast.deployer.lib.helper.ponder.Ponder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 
+import static net.liukrast.deployer.lib.helper.PonderSceneHelpers.*;
 import static net.liukrast.deployer.lib.helper.PonderSceneHelpers.Gauge.*;
 
-public class PassiveGaugeScene {
-    public static void passiveGauge(SceneBuilder builder, SceneBuildingUtil util) {
+public class PassiveGaugePonder implements Ponder {
+    @Override
+    public String getSchematicPath() {
+        return "high_logistics/passive_gauge";
+    }
+
+    @Override
+    public void create(SceneBuilder builder, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(builder);
         scene.title("passive_gauge", "Using Passive Gauges to optimize Automated Recipes");
         scene.configureBasePlate(0, 0, 7);
@@ -23,7 +31,7 @@ public class PassiveGaugeScene {
         var pickG = new FactoryPanelPosition(new BlockPos(2,3,2), FactoryPanelBlock.PanelSlot.BOTTOM_RIGHT);
         var stickG = new FactoryPanelPosition(new BlockPos(3,3,2), FactoryPanelBlock.PanelSlot.BOTTOM_LEFT);
         var diaG = new FactoryPanelPosition(new BlockPos(3,4,2), FactoryPanelBlock.PanelSlot.BOTTOM_LEFT);
-        var plaG = new FactoryPanelPosition(new BlockPos(5,3,2), FactoryPanelBlock.PanelSlot.BOTTOM_RIGHT);
+        var plankG = new FactoryPanelPosition(new BlockPos(5,3,2), FactoryPanelBlock.PanelSlot.BOTTOM_RIGHT);
 
         scene.world().showIndependentSection(util.select().fromTo(5,4,3,1,1,3), Direction.NORTH);
         scene.idle(10);
@@ -43,7 +51,7 @@ public class PassiveGaugeScene {
         scene.idle(5);
         scene.world()
                 .showSection(util.select()
-                        .position(plaG.pos()), Direction.SOUTH);
+                        .position(plankG.pos()), Direction.SOUTH);
         scene.idle(5);
         scene.world()
                 .showSection(util.select()
@@ -53,46 +61,19 @@ public class PassiveGaugeScene {
         scene.idle(5);
         addPanelConnection(builder, pickG, stickG);
         scene.idle(5);
-        addPanelConnection(builder, stickG, plaG);
+        addPanelConnection(builder, stickG, plankG);
         scene.idle(20);
 
-        scene.overlay()
-                .showText(60)
-                .text("")
-                .placeNearTarget()
-                .attachKeyFrame()
-                .pointAt(stickG.pos().getCenter().add(-0.25f, 0.25f,0));
-        scene.idle(80);
-        scene.overlay()
-                .showText(60)
-                .text("")
-                .placeNearTarget()
-                .pointAt(stickG.pos().getCenter().add(-0.25f, 0.25f,0));
-        scene.idle(100);
+        displayText(scene, stickG, Direction.NORTH, 60, true);
+        displayText(scene, stickG, Direction.NORTH, 60, false);
+        scene.idle(20);
         setConnectionAmount(builder, pickG, stickG, 2);
         setPanelNotSatisfied(builder, pickG);
-        scene.overlay()
-                .showText(100)
-                .text("")
-                .placeNearTarget()
-                .attachKeyFrame()
-                .pointAt(pickG.pos().getCenter().add(-0.25f, 0.25f,0));
-        scene.idle(120);
-        scene.overlay()
-                .showText(100)
-                .text("")
-                .placeNearTarget()
-                .pointAt(stickG.pos().getCenter().add(-0.25f, 0.25f,0));
-        scene.idle(120);
+        displayText(scene, pickG, Direction.NORTH, 100, true);
+        displayText(scene, stickG, Direction.NORTH, 100, false);
         setPanelCrafting(builder, util, pickG);
         scene.idle(40);
-        scene.overlay()
-                .showText(100)
-                .text("")
-                .placeNearTarget()
-                .attachKeyFrame()
-                .pointAt(stickG.pos().getCenter().add(-0.25f, 0.25f,0));
-        scene.idle(120);
+        displayText(scene, stickG, Direction.NORTH, 100, true);
         setPanelSatisfied(builder, pickG);
         scene.idle(40);
     }

@@ -8,7 +8,6 @@ import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.foundation.instruction.RotateSceneInstruction;
 import net.liukrast.deployer.lib.helper.ponder.Ponder;
-import net.liukrast.eg.content.logistics.board.IntPanelBehaviour;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 
@@ -42,7 +41,7 @@ public class ExpressionGaugePonder implements Ponder {
         scene.world().showIndependentSection(util.select().position(gauge.pos()), Direction.WEST);
         scene.idle(40);
 
-        displayText(scene, gauge.pos(), 80, false);
+        displayText(scene, gauge, Direction.EAST, 80, false);
 
         scene.world().showIndependentSection(util.select().fromTo(inA, inB), Direction.WEST);
         scene.idle(5);
@@ -51,7 +50,7 @@ public class ExpressionGaugePonder implements Ponder {
         scene.world().showIndependentSection(util.select().fromTo(nixie, nixie.north(6)), Direction.DOWN);
         scene.idle(40);
 
-        displayText(scene, gauge.pos(), 60, false);
+        displayText(scene, gauge, Direction.EAST, 60, false);
         displayText(scene, inA, 60, false);
 
         addPanelConnection(scene, gauge, new FactoryPanelPosition(inA, FactoryPanelBlock.PanelSlot.TOP_RIGHT));
@@ -71,8 +70,8 @@ public class ExpressionGaugePonder implements Ponder {
         scene.overlay().showControls(inB.north().getCenter(), Pointing.DOWN, 20).showing(createComponent(Component.literal("b")));
         scene.idle(40);
 
-        displayText(scene, gauge.pos(), 80, true);
-        displayText(scene, gauge.pos(), 80, false);
+        displayText(scene, gauge, Direction.EAST, 80, true);
+        displayText(scene, gauge, Direction.EAST, 80, false);
 
         scene.overlay().showControls(inA.getCenter(), Pointing.DOWN, 20).showing(createComponent(Component.literal("15")));
         scene.idle(40);
@@ -95,7 +94,7 @@ public class ExpressionGaugePonder implements Ponder {
         scene.idle(10);
         displayText(scene, lever, 60, false);
 
-        displayText(scene, gauge.pos(), 60, false);
+        displayText(scene, gauge, Direction.EAST, 60, false);
         scene.world().toggleRedstonePower(util.select().position(lever));
         IntGaugePonder.setLinkTransmit(scene, lever, 1);
         scene.effects().indicateRedstone(lever);

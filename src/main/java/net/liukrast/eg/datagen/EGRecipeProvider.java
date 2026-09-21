@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ExtraGaugesRecipeProvider extends RecipeProvider implements IConditionBuilder {
+public class EGRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
-    public ExtraGaugesRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+    public EGRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
 
@@ -30,6 +30,7 @@ public class ExtraGaugesRecipeProvider extends RecipeProvider implements ICondit
         makeGauge(EGItems.PASSIVE_GAUGE.get(), AllItems.STURDY_SHEET.get(), output);
         makeGauge(EGItems.STRING_GAUGE.get(), Items.PAPER, output);
         makeGauge(EGItems.EXPRESSION_GAUGE.get(), EGItems.INT_GAUGE.asItem(), output);
+        makeGauge(EGItems.FILTER_GAUGE.get(), AllItems.FILTER.get(), output);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, EGBlocks.INT_SELECTOR.get())
                 .requires(AllBlocks.ANALOG_LEVER.get())
@@ -55,13 +56,11 @@ public class ExtraGaugesRecipeProvider extends RecipeProvider implements ICondit
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, EGItems.PASSIVE_GAUGE)
                 .requires(EGItems.PASSIVE_GAUGE)
-                .unlockedBy("has_passive_gauge", has(EGItems.PASSIVE_GAUGE)).save(output, "passive_gauge_clear");
-
-        makeGauge(EGItems.FILTER_GAUGE.get(), AllItems.FILTER.get(), output);
+                .unlockedBy("has_passive_gauge", has(EGItems.PASSIVE_GAUGE)).save(output, ExtraGauges.CONSTANTS.id("passive_gauge_clear"));
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, EGItems.FILTER_GAUGE)
                 .requires(EGItems.FILTER_GAUGE)
-                .unlockedBy("has_filter_gauge", has(EGItems.FILTER_GAUGE)).save(output, "filter_gauge_clear");
+                .unlockedBy("has_filter_gauge", has(EGItems.FILTER_GAUGE)).save(output, ExtraGauges.CONSTANTS.id("filter_gauge_clear"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, EGBlocks.REDSTONE_PORT)
                 .pattern("a").pattern("b")

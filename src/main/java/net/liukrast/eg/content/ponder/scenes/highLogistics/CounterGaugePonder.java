@@ -8,7 +8,6 @@ import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.foundation.instruction.RotateSceneInstruction;
 import net.liukrast.deployer.lib.helper.ponder.Ponder;
-import net.liukrast.eg.content.logistics.board.IntPanelBehaviour;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 
@@ -37,8 +36,8 @@ public class CounterGaugePonder implements Ponder {
         var button = util.grid().at(2,2,7);
         var out = util.select().fromTo(2,2,1,1,3,1);
 
-        displayText(scene, gauge.pos(), 60, false);
-        displayText(scene, gauge.pos(), 60, false);
+        displayText(scene, gauge, Direction.EAST, 60, false);
+        displayText(scene, gauge, Direction.EAST, 60, false);
         displayText(scene, button, 60, true);
 
         scene.world().toggleRedstonePower(util.select().position(button));
@@ -50,8 +49,8 @@ public class CounterGaugePonder implements Ponder {
         IntGaugePonder.setLinkTransmit(scene, button, 0);
         scene.idle(10);
 
-        displayText(scene, gauge.pos(), 40, false);
-        displayText(scene, gauge.pos(), 60, true);
+        displayText(scene, gauge, Direction.EAST, 40, false);
+        displayText(scene, gauge, Direction.EAST, 60, true);
         scene.overlay().showControls(gauge.pos().getCenter(), Pointing.DOWN, 20).showing(createComponent(Component.literal("4")));
         scene.idle(40);
         for(int i = 0; i < 2; i++) {
@@ -64,7 +63,7 @@ public class CounterGaugePonder implements Ponder {
             scene.idle(10);
         }
 
-        displayText(scene, gauge.pos(), 60, true);
+        displayText(scene, gauge, Direction.EAST, 60, true);
 
         scene.world().toggleRedstonePower(util.select().position(button));
         IntGaugePonder.setLinkTransmit(scene, button, 1);
@@ -81,7 +80,7 @@ public class CounterGaugePonder implements Ponder {
         IntGaugePonder.setLinkTransmit(scene, button, 0);
 
         scene.idle(20);
-        displayText(scene, gauge.pos(), 60, false);
+        displayText(scene, gauge, Direction.EAST, 60, false);
         scene.idle(40);
 
         // Reset
@@ -111,7 +110,7 @@ public class CounterGaugePonder implements Ponder {
         scene.idle(50);
 
 
-        displayText(scene, gauge.pos(), 60, false);
+        displayText(scene, gauge, Direction.EAST, 60, false);
 
         scene.world().toggleRedstonePower(util.select().position(button));
         IntGaugePonder.setLinkTransmit(scene, button, 1);

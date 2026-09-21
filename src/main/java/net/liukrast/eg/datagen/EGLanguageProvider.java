@@ -27,6 +27,9 @@ public class EGLanguageProvider extends DeployerLanguageProviderImpl {
         addShiftSummary(EGBlocks.ROSE_QUARTZ_PORT.asItem(), "Connects real-world redstone to gauges (Number connection, 0-15)")
                 .addLine("When Wrenched", "Switches from input to output and viceversa");
 
+        add("create.logistics.filter.shift_click_to_set", "Sneak-Click with item to set");
+        add("create.logistics.filter.shift_click_to_replace", "Sneak-Click with item to replace");
+
         add("create.logistics.logic_gate", "Logic Gate");
         add("create.logistics.int_operation", "Int Operation");
         add("create.logistics.comparator_value", "Select the comparator mode");
@@ -198,6 +201,16 @@ public class EGLanguageProvider extends DeployerLanguageProviderImpl {
         );
 
         createPonder(
+                "string_gauge_rewrite", "Using string gauges to rewrite package addresses",
+                "When a string gauge is attached to a repackager...",
+                "...it will go in rewrite mode.",
+                "Open the string gauge menu, setup a regex and a replacement...",
+                "§cHello!",
+                "§aHi!",
+                "When powered, the gauge will now change the address in outgoing packages"
+        );
+
+        createPonder(
                 "expression_gauge", "Calculate expressions with the Expression gauge",
                 "Complex expressions can be evaluated with an expression gauge",
                 "Open the menu and click [+] to add a connection...",
@@ -222,5 +235,16 @@ public class EGLanguageProvider extends DeployerLanguageProviderImpl {
                 "...it will try to look up for other items matching the filter...",
                 "...and update the recipe."
         );
+
+        
+        createPonder(
+                "display_collector","Using the display collector to gather text data",
+                "The display collector can send text data to gauges",
+                "Click on the source you want to gather text from...",
+                "...and place your display collector.",
+                "Open a gauge and connect it to the display collector",
+                "After opening the display collector menu, it will now send text to gauges"
+        );
+
     }
 }

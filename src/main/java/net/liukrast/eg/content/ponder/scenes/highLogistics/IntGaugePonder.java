@@ -8,7 +8,7 @@ import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.foundation.instruction.RotateSceneInstruction;
 import net.liukrast.deployer.lib.helper.ponder.Ponder;
-import net.liukrast.eg.content.logistics.link.LinkedLeverBlockEntity;
+import net.liukrast.eg.content.logistics.link.LinkedControlBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -37,18 +37,18 @@ public class IntGaugePonder implements Ponder {
         scene.world().showIndependentSection(util.select().position(gaugeA.pos()), Direction.WEST);
         scene.idle(40);
 
-        displayText(scene, gaugeA.pos(), 80, false);
+        displayText(scene, gaugeA, Direction.EAST, 80, false);
 
         scene.world().showIndependentSection(util.select().position(gaugeB.pos()), Direction.WEST);
         scene.idle(40);
-        displayText(scene, gaugeB.pos(), 60, false);
-        displayText(scene, gaugeB.pos(), 60, false);
-        displayText(scene, gaugeA.pos(), 60, true);
+        displayText(scene, gaugeB, Direction.EAST, 60, false);
+        displayText(scene, gaugeB, Direction.EAST, 60, false);
+        displayText(scene, gaugeA, Direction.EAST, 60, true);
 
         addPanelConnection(builder, gaugeB, gaugeA);
 
         scene.idle(30);
-        displayText(scene, gaugeA.pos().north(), 60, false);
+        displayText(scene, gaugeA, Direction.EAST, 60, false);
 
         scene.idle(30);
 
@@ -93,8 +93,8 @@ public class IntGaugePonder implements Ponder {
         setNixieTubeText(scene, nixie, Component.literal("8"), 1, Direction.DOWN);
         scene.idle(40);
 
-        displayText(scene, gaugeA.pos(), 60, true);
-        displayText(scene, gaugeA.pos().north(), 60, false);
+        displayText(scene, gaugeA, Direction.EAST, 60, true);
+        displayText(scene, gaugeA, Direction.EAST, 60, false);
 
         scene.overlay().showControls(gaugeA.pos().getCenter().add(0, 0.5, -0.5), Pointing.DOWN, 20).showing(AllIcons.I_MTD_CLOSE);
         scene.idle(40);
@@ -103,8 +103,8 @@ public class IntGaugePonder implements Ponder {
         setNixieTubeText(scene, nixie, Component.literal("15"), 1, Direction.DOWN);
         scene.idle(40);
 
-        displayText(scene, gaugeA.pos(), 100, true);
-        displayText(scene, gaugeA.pos(), 80, false);
+        displayText(scene, gaugeA, Direction.EAST, 100, true);
+        displayText(scene, gaugeA, Direction.EAST, 80, false);
 
         var lever = util.grid().at(2,1,3);
         scene.addKeyframe();
@@ -121,7 +121,7 @@ public class IntGaugePonder implements Ponder {
         setLinkTransmit(scene, lever, 1);
 
         displayText(scene, lever, 60, false);
-        displayText(scene, gaugeB.pos(), 60, false);
+        displayText(scene, gaugeB, Direction.EAST, 60, false);
         scene.idle(10);
         scene.overlay().showControls(nixie.getCenter(), Pointing.DOWN, 20).showing(AllIcons.I_ACTIVE);
         setNixieTubeText(scene, nixie, Component.literal("0"), 1, Direction.DOWN);
@@ -130,7 +130,7 @@ public class IntGaugePonder implements Ponder {
     }
 
     public static void setLinkTransmit(SceneBuilder scene, BlockPos pos, int signal) {
-        scene.world().modifyBlockEntity(pos, LinkedLeverBlockEntity.class, be -> be.transmittedSignal = signal);
+        scene.world().modifyBlockEntity(pos, LinkedControlBlockEntity.class, be -> be.transmittedSignal = signal);
     }
 
 
