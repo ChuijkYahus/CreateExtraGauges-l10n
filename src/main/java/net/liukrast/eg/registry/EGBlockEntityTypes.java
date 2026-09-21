@@ -23,6 +23,10 @@ public class EGBlockEntityTypes {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RedstonePortBlockEntity>> REDSTONE_PORT = BLOCK_ENTITY_TYPES.register("redstone_port", () -> BlockEntityType.Builder.of(RedstonePortBlockEntity::new, EGBlocks.REDSTONE_PORT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RoseQuartzPortBlockEntity>> ROSE_QUARTZ_PORT = BLOCK_ENTITY_TYPES.register("rose_quartz_port", () -> BlockEntityType.Builder.of(RoseQuartzPortBlockEntity::new, EGBlocks.ROSE_QUARTZ_PORT.get()).build(null));
 
+    static {
+        BLOCK_ENTITY_TYPES.addAlias(ExtraGauges.CONSTANTS.id("linked_lever"), ExtraGauges.CONSTANTS.id("linked_control"));
+    }
+
     @ApiStatus.Internal
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITY_TYPES.register(eventBus);
